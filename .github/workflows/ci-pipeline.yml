@@ -16,7 +16,7 @@ jobs:
         run: |
           cd book-app
           chmod +x gradlew
-          ./gradlew build
+          ./gradlew build -PregistryUrl=${{ secrets.REGISTRY_URL }} -PregistryUsername=${{ secrets.REGISTRY_USERNAME }} -PregistrySecret=${{ secrets.REGISTRY_TOKEN }}
   package:
     name: Build and Push Docker Image
     needs: [build]
@@ -28,13 +28,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Login to container registry
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_TOKEN }}
       - name: Build Docker image
         run: |
           cd book-app
           chmod +x gradlew
-          ./gradlew bootBuildImage --publishImage
+          ./gradlew bootBuildImage --publishImage -PregistryUrl=${{ secrets.REGISTRY_URL }} -PregistryUsername=${{ secrets.REGISTRY_USERNAME }} -PregistrySecret=${{ secrets.REGISTRY_TOKEN }}
