@@ -36,13 +36,13 @@ class BookController {
 
 	@PostMapping
 	public Mono<Book> addBookToCatalog(@RequestBody Book book) {
-		bookCatalog.put(book.getId(), book);
+		bookCatalog.put(book.getIsbn(), book);
 		return Mono.just(book);
 	}
 }
 
 @Data @AllArgsConstructor
 class Book {
-	private String id;
+	private String isbn;
 	private String title;
 }
