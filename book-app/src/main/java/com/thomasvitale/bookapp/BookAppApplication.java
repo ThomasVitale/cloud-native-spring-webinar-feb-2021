@@ -1,15 +1,15 @@
 package com.thomasvitale.bookapp;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,23 +25,26 @@ public class BookAppApplication {
 
 	@RestController
 	@RequestMapping("books")
+	@RequiredArgsConstructor
 	static class BookController {
-		private static final Map<String,Book> bookCatalog = new ConcurrentHashMap<>();
+		private final BookRepository bookRepository;
 
 		@GetMapping
 		public Flux<Book> getAllBooks() {
-			return Flux.fromIterable(bookCatalog.values());
+			return bookRepository.findAll();
 		}
 
 		@PostMapping
 		public Mono<Book> addBookToCatalog(@RequestBody Book book) {
-			bookCatalog.put(book.getId(), book);
-			return Mono.just(book);
+			return bookRepository.save(book);
 		}
 	}
 
+	interface BookRepository extends ReactiveCrudRepository<Book,String> {}
+
 	@Data @AllArgsConstructor
 	static class Book {
+		@Id
 		private String id;
 		private String title;
 	}

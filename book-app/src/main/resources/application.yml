@@ -1,1 +1,5 @@
-
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/book_catalog
+    username: dbuser
+    password: dbpassword
