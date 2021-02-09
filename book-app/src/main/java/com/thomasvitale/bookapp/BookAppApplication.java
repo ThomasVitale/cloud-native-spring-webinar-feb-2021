@@ -22,27 +22,27 @@ public class BookAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BookAppApplication.class, args);
 	}
+}
 
-	@RestController
-	@RequestMapping("books")
-	static class BookController {
-		private static final Map<String,Book> bookCatalog = new ConcurrentHashMap<>();
+@RestController
+@RequestMapping("books")
+class BookController {
+	private static final Map<String,Book> bookCatalog = new ConcurrentHashMap<>();
 
-		@GetMapping
-		public Flux<Book> getAllBooks() {
-			return Flux.fromIterable(bookCatalog.values());
-		}
-
-		@PostMapping
-		public Mono<Book> addBookToCatalog(@RequestBody Book book) {
-			bookCatalog.put(book.getId(), book);
-			return Mono.just(book);
-		}
+	@GetMapping
+	public Flux<Book> getAllBooks() {
+		return Flux.fromIterable(bookCatalog.values());
 	}
 
-	@Data @AllArgsConstructor
-	static class Book {
-		private String id;
-		private String title;
+	@PostMapping
+	public Mono<Book> addBookToCatalog(@RequestBody Book book) {
+		bookCatalog.put(book.getId(), book);
+		return Mono.just(book);
 	}
+}
+
+@Data @AllArgsConstructor
+class Book {
+	private String id;
+	private String title;
 }
