@@ -3,3 +3,9 @@ spring:
     url: r2dbc:postgresql://localhost:5432/book_catalog
     username: dbuser
     password: dbpassword
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
