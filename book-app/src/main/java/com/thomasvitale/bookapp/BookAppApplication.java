@@ -41,11 +41,12 @@ class BookController {
 	}
 }
 
-interface BookRepository extends ReactiveCrudRepository<Book,String> {}
+interface BookRepository extends ReactiveCrudRepository<Book,Long> {}
 
 @Data @AllArgsConstructor
 class Book {
 	@Id
-	private String id;
+	private Long id;
+	private String isbn;
 	private String title;
 }
