@@ -1,0 +1,52 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.thomasvitale'
+version = '2.2.0'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+    runtimeOnly 'io.r2dbc:r2dbc-postgresql'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+bootBuildImage {
+    imageName = "${project.property("registryUrl")}/${project.name}:${project.version}"
+    environment = ["BP_JVM_VERSION": "11.*"]
+
+    docker {
+        host = project.property("dockerHost")
+
+        publishRegistry {
+            username = project.property("registryUsername")
+            password = project.property("registrySecret")
+            url = project.property("registryUrl")
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
