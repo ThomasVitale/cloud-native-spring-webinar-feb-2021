@@ -38,3 +38,10 @@ spec:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /workspace/config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: book-config
