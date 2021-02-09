@@ -22,30 +22,30 @@ public class BookAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BookAppApplication.class, args);
 	}
+}
 
-	@RestController
-	@RequestMapping("books")
-	@RequiredArgsConstructor
-	static class BookController {
-		private final BookRepository bookRepository;
+@RestController
+@RequestMapping("books")
+@RequiredArgsConstructor
+class BookController {
+	private final BookRepository bookRepository;
 
-		@GetMapping
-		public Flux<Book> getAllBooks() {
-			return bookRepository.findAll();
-		}
-
-		@PostMapping
-		public Mono<Book> addBookToCatalog(@RequestBody Book book) {
-			return bookRepository.save(book);
-		}
+	@GetMapping
+	public Flux<Book> getAllBooks() {
+		return bookRepository.findAll();
 	}
 
-	interface BookRepository extends ReactiveCrudRepository<Book,String> {}
-
-	@Data @AllArgsConstructor
-	static class Book {
-		@Id
-		private String id;
-		private String title;
+	@PostMapping
+	public Mono<Book> addBookToCatalog(@RequestBody Book book) {
+		return bookRepository.save(book);
 	}
+}
+
+interface BookRepository extends ReactiveCrudRepository<Book,String> {}
+
+@Data @AllArgsConstructor
+class Book {
+	@Id
+	private String id;
+	private String title;
 }

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: book-app
-          image: thomasvitale.azurecr.io/book-app:2.0.0
+          image: thomasvitale.azurecr.io/book-app:2.1.0
           ports:
             - containerPort: 8080
           resources:
