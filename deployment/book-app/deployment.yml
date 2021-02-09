@@ -6,6 +6,7 @@ metadata:
     app: book-app
   namespace: book-demo
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: book-app
@@ -54,10 +55,3 @@ spec:
                 secretKeyRef:
                   key: password
                   name: postgres-creds
-          volumeMounts:
-            - name: config-volume
-              mountPath: /workspace/config
-      volumes:
-        - name: config-volume
-          configMap:
-            name: book-config
