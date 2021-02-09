@@ -1,0 +1,25 @@
+FROM adoptopenjdk:11-jre-hotspot-bionic
+WORKDIR application
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} book-app.jar
+RUN java -Djarmode=layertools -jar book-app.jar extract
+
+FROM adoptopenjdk:11-jre-hotspot-bionic
+
+ARG TITLE
+ARG VENDOR
+ARG VERSION
+
+LABEL org.opencontainers.image.title=$TITLE
+LABEL org.opencontainers.image.vendor=$VENDOR
+LABEL org.opencontainers.image.version=$VERSION
+
+RUN adduser spring && useradd -g spring spring
+USER spring
+
+WORKDIR application
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/snapshot-dependencies/ ./
+COPY --from=builder application/resources/ ./
+COPY --from=builder application/application/ ./
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
