@@ -28,6 +28,21 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
 }
 
+bootBuildImage {
+    imageName = "${project.property("registryUrl")}/${project.name}:${project.version}"
+    environment = ["BP_JVM_VERSION": "11.*"]
+
+    docker {
+        host = project.property("dockerHost")
+
+        publishRegistry {
+            username = project.property("registryUsername")
+            password = project.property("registrySecret")
+            url = project.property("registryUrl")
+        }
+    }
+}
+
 test {
     useJUnitPlatform()
 }
