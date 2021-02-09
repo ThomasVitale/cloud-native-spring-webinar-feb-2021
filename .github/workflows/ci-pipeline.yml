@@ -1,5 +1,8 @@
 name: CI Pipeline
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -18,7 +21,7 @@ jobs:
           chmod +x gradlew
           ./gradlew build -PregistryUrl=${{ secrets.REGISTRY_URL }} -PregistryUsername=${{ secrets.REGISTRY_USERNAME }} -PregistrySecret=${{ secrets.REGISTRY_TOKEN }}
   package:
-    name: Build and Push Docker Image
+    name: Build and Publish Image
     needs: [build]
     runs-on: ubuntu-20.04
     steps:
