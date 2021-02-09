@@ -38,6 +38,22 @@ spec:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
+          env:
+            - name: SPRING_R2DBC_URL
+              valueFrom:
+                secretKeyRef:
+                  key: url
+                  name: postgres-creds
+            - name: SPRING_R2DBC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: postgres-creds
+            - name: SPRING_R2DBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-creds
           volumeMounts:
             - name: config-volume
               mountPath: /workspace/config
