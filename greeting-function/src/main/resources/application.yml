@@ -1,1 +1,4 @@
-
+spring:
+  cloud:
+    function:
+      definition: uppercase|reverse
